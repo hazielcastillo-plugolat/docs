@@ -1,6 +1,7 @@
 ---
-title: "Introduction"
-description: "This is a test from cursor"
+title: "Cookies & Cream API con FastAPI"
+description: "Implementa y consume la API academica para sabores y pedidos de la heladeria Cookies & Cream."
+icon: "ice-cream"
 ---
 
 <Frame className="w-24 mb-4 shadow-none border-none">
@@ -13,7 +14,7 @@ description: "This is a test from cursor"
 
 ## Proposito y alcance
 
-Cookies & Cream necesita una API sencilla para registrar sabores, aceptar pedidos y exponer su estado en tiempo real. Esta documentacion recoge el flujo completo: instalacion, ejecucion del servidor y pruebas mediante el front temporal que FastAPI habilita en /docs.
+Cookies & Cream necesita una API sencilla para registrar sabores, aceptar pedidos y exponer su estado en tiempo real. Esta documentacion recoge el flujo completo: instalacion, ejecucion del servidor y pruebas mediante el front temporal que FastAPI habilita en `/docs`.
 
 <Info>
 El objetivo es educativo. Puedes reemplazar las listas en memoria por bases de datos y agregar autenticacion manteniendo los mismos contratos de API.
@@ -23,7 +24,7 @@ El objetivo es educativo. Puedes reemplazar las listas en memoria por bases de d
 
 <CardGroup cols={2}>
   <Card title="Preparacion y modelos" icon="wrench" href="/setup">
-    Instala FastAPI y Uvicorn, entiende los modelos principales y replica el archivo main.py.
+    Instala FastAPI y Uvicorn, entiende los modelos principales y replica el archivo `main.py`.
   </Card>
   <Card title="Escenario completo" icon="timeline" href="/escenario">
     Sigue un recorrido paso a paso con datos reales para sabores y pedidos encadenados.
@@ -55,6 +56,6 @@ El objetivo es educativo. Puedes reemplazar las listas en memoria por bases de d
 
 ## Recordatorios rapidos
 
-- Ejecuta uvicorn main:app --reload para habilitar Swagger UI en http://127.0.0.1:8000/docs.
-- Usa /redoc si prefieres una representacion alternativa de la API.
+- Ejecuta `uvicorn main:app --reload` para habilitar Swagger UI en `http://127.0.0.1:8000/docs`.
+- Usa `/redoc` si prefieres una representacion alternativa de la API.
 - Todos los ejemplos emplean datos reales (Cookies & Cream Clasico, Valeria Rojo) reutilizados en las secciones de Escenario y Referencia.
