@@ -1,56 +1,61 @@
 ---
-title: "Introduction"
-description: "This is a test from cursor"
+title: "Cookies & Cream API con FastAPI"
+description: "Implementa y consume la API academica para sabores y pedidos de la heladeria Cookies & Cream."
+icon: "ice-cream"
 ---
 
-## Setting up
+<Frame className="w-24 mb-4 shadow-none border-none">
+  <img
+    src="https://images.unsplash.com/photo-1576506295286-5cda18df43e7?q=80&w=1935&auto=format&fit=crop"
+    alt="Helado Cookies & Cream servido en cono"
+    className="rounded-full object-cover w-20 h-20 mx-auto"
+  />
+</Frame>
 
-Testing part 2.
+## Proposito y alcance
 
-<Card title="Start here" icon="rocket" horizontal href="/quickstart">
-  Follow our three step quickstart guide.
-</Card>
+Cookies & Cream necesita una API sencilla para registrar sabores, aceptar pedidos y exponer su estado en tiempo real. Esta documentacion recoge el flujo completo: instalacion, ejecucion del servidor y pruebas mediante el front temporal que FastAPI habilita en /docs.
 
-## Make it yours
+<Info>
+El objetivo es educativo. Puedes reemplazar las listas en memoria por bases de datos y agregar autenticacion manteniendo los mismos contratos de API.
+</Info>
 
-Design a docs site that looks great and empowers your users.
+## Secciones de la documentacion
 
-<Columns cols={2}>
-  <Card title="Edit locally" icon="pen-to-square" href="/development">
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Preparacion y modelos" icon="wrench" href="/setup">
+    Instala FastAPI y Uvicorn, entiende los modelos principales y replica el archivo main.py.
   </Card>
-  <Card title="Customize your site" icon="palette" href="/essentials/settings">
-    Customize the design and colors of your site to match your brand.
+  <Card title="Escenario completo" icon="timeline" href="/escenario">
+    Sigue un recorrido paso a paso con datos reales para sabores y pedidos encadenados.
   </Card>
-  <Card title="Set up navigation" icon="map" href="/essentials/navigation">
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Referencia de endpoints" icon="list-check" href="/referencia">
+    Consulta parametros, respuestas y codigos mas relevantes sin recorrer toda la guia.
   </Card>
-  <Card title="API documentation" icon="terminal" href="/api-reference/introduction">
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Archivo principal" icon="file-code" href="/setup#codigo-base-reutilizable">
+    Accede directo a la implementacion de FastAPI para integrarla a tus flujos.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## Flujo general resumido
 
-Everything you need to create world-class documentation.
+<CardGroup cols={2}>
+  <Card title="Catalogo vivo" icon="book-open">
+    Crea o consulta sabores desde kioscos, apps moviles o tableros internos.
+  </Card>
+  <Card title="Pedidos conectados" icon="receipt">
+    Registra compras omnicanal y mantente sincronizado con cocina y reparto.
+  </Card>
+  <Card title="Seguimiento en linea" icon="clock">
+    Ofrece visibilidad al cliente sin construir modulos extras.
+  </Card>
+  <Card title="Base extensible" icon="arrows-rotate">
+    Migra a cualquier proveedor de datos manteniendo la logica de negocio.
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card title="Write with MDX" icon="pen-fancy" href="/essentials/markdown">
-    Use MDX to style your docs pages.
-  </Card>
-  <Card title="Code samples" icon="code" href="/essentials/code">
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card title="Images" icon="image" href="/essentials/images">
-    Display images and other media.
-  </Card>
-  <Card title="Reusable snippets" icon="recycle" href="/essentials/reusable-snippets">
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Recordatorios rapidos
 
-## Need inspiration?
-
-<Card title="See complete examples" icon="stars" href="https://mintlify.com/customers">
-  Browse our showcase of exceptional documentation sites.
-</Card>
+- Ejecuta uvicorn main:app --reload para habilitar Swagger UI en http://127.0.0.1:8000/docs.
+- Usa /redoc si prefieres una representacion alternativa de la API.
+- Todos los ejemplos emplean datos reales (Cookies & Cream Clasico, Valeria Rojo) reutilizados en las secciones de Escenario y Referencia.

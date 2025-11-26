@@ -1,0 +1,150 @@
+---
+title: "Referencia de endpoints"
+description: "Parametros, respuestas y ejemplos para sabores y pedidos de Cookies & Cream."
+---
+
+## Sabores
+
+### Registrar un sabor (POST `/sabores`)
+
+<ParamField body="nombre" type="string" required>
+Nombre comercial (3-50 caracteres).
+</ParamField>
+<ParamField body="descripcion" type="string" required>
+Breve descripcion para apps y mostradores.
+</ParamField>
+<ParamField body="disponible" type="boolean" default="true">
+Permite anunciar sabores que aun no se pueden vender.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST http://127.0.0.1:8000/sabores \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Cookies & Cream Clasico",
+    "descripcion": "Vainilla artesanal con trozos de galleta de cacao",
+    "disponible": true
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json Success 201 Created
+{
+  "id": 1,
+  "nombre": "Cookies & Cream Clasico",
+  "descripcion": "Vainilla artesanal con trozos de galleta de cacao",
+  "disponible": true
+}
+```
+</ResponseExample>
+
+<ResponseField name="id" type="integer" required>
+Identificador incremental usado para asociar pedidos.
+</ResponseField>
+<ResponseField name="disponible" type="boolean">
+Bandera que permite ocultar sabores en reposicion.
+</ResponseField>
+
+### Listar sabores (GET `/sabores`)
+
+<Info>
+Agrega `?disponible=true` para mostrar solo sabores activos.
+</Info>
+
+<ResponseExample>
+```json Success 200 OK
+[
+  {
+    "id": 1,
+    "nombre": "Cookies & Cream Clasico",
+    "descripcion": "Vainilla artesanal con trozos de galleta de cacao",
+    "disponible": true
+  },
+  {
+    "id": 2,
+    "nombre": "Limon vegano",
+    "descripcion": "Sorbete con ralladura fresca",
+    "disponible": false
+  }
+]
+```
+</ResponseExample>
+
+## Pedidos
+
+### Crear un pedido (POST `/pedidos`)
+
+<ParamField body="cliente" type="string" required>
+Nombre que aparecera en tickets y notificaciones.
+</ParamField>
+<ParamField body="sabor_id" type="integer" required>
+Debe corresponder a un sabor disponible; de lo contrario la API responde `400`.
+</ParamField>
+<ParamField body="tamano" type="string" required>
+Valores permitidos: `cono`, `vaso`, `litro`.
+</ParamField>
+<ParamField body="estado" type="string" default="pendiente">
+Puedes cambiarlo a `preparando` o `entregado` desde otros sistemas.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST http://127.0.0.1:8000/pedidos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cliente": "Valeria Rojo",
+    "sabor_id": 1,
+    "tamano": "vaso"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json Success 201 Created
+{
+  "id": 1,
+  "cliente": "Valeria Rojo",
+  "sabor_id": 1,
+  "tamano": "vaso",
+  "estado": "pendiente"
+}
+```
+</ResponseExample>
+
+<ResponseField name="id" type="integer" required>
+Consecutivo del pedido utilizado para consultas posteriores.
+</ResponseField>
+<ResponseField name="estado" type="string">
+Etapa actual del pedido.
+</ResponseField>
+
+### Consultar un pedido (GET `/pedidos/{pedido_id}`)
+
+<ResponseExample>
+```json Success 200 OK
+{
+  "id": 1,
+  "cliente": "Valeria Rojo",
+  "sabor_id": 1,
+  "tamano": "vaso",
+  "estado": "pendiente"
+}
+```
+</ResponseExample>
+
+### Consultar estado (GET `/pedidos/{pedido_id}/estado`)
+
+<ResponseExample>
+```json Success 200 OK
+{
+  "pedido_id": 1,
+  "estado": "pendiente"
+}
+```
+</ResponseExample>
+
+<Check>
+Usa esta version reducida para bots o notificaciones sin exponer todo el pedido.
+</Check>

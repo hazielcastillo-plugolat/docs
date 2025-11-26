@@ -1,0 +1,149 @@
+---
+title: "Escenario completo"
+description: "Recorrido paso a paso para usar los endpoints de sabores y pedidos con datos reales."
+---
+
+## Flujo guiado
+
+<Steps>
+<Step title="Registrar sabores base">
+  Crea los sabores que serviran en el resto de ejemplos.
+
+  <RequestExample>
+  ```bash cURL
+  curl -X POST http://127.0.0.1:8000/sabores \
+    -H "Content-Type: application/json" \
+    -d '{
+      "nombre": "Cookies & Cream Clasico",
+      "descripcion": "Vainilla artesanal con trozos de galleta de cacao",
+      "disponible": true
+    }'
+  ```
+  </RequestExample>
+
+  <ResponseExample>
+  ```json Success 201 Created
+  {
+    "id": 1,
+    "nombre": "Cookies & Cream Clasico",
+    "descripcion": "Vainilla artesanal con trozos de galleta de cacao",
+    "disponible": true
+  }
+  ```
+  </ResponseExample>
+
+  Crea tambien un sabor especial con disponibilidad limitada:
+
+  ```bash
+  curl -X POST http://127.0.0.1:8000/sabores \
+    -H "Content-Type: application/json" \
+    -d '{
+      "nombre": "Limon vegano",
+      "descripcion": "Sorbete con ralladura fresca",
+      "disponible": false
+    }'
+  ```
+</Step>
+
+<Step title="Listar el catalogo antes de vender">
+  <RequestExample>
+  ```bash cURL
+  curl http://127.0.0.1:8000/sabores
+  ```
+  </RequestExample>
+
+  <ResponseExample>
+  ```json Success 200 OK
+  [
+    {
+      "id": 1,
+      "nombre": "Cookies & Cream Clasico",
+      "descripcion": "Vainilla artesanal con trozos de galleta de cacao",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": "Limon vegano",
+      "descripcion": "Sorbete con ralladura fresca",
+      "disponible": false
+    }
+  ]
+  ```
+  </ResponseExample>
+
+  <Tip>
+  Usa el filtro `?disponible=true` para poblar tableros o menues dinamicos sin mostrar sabores en reposicion.
+  </Tip>
+</Step>
+
+<Step title="Crear un pedido usando el sabor 1">
+  <RequestExample>
+  ```bash cURL
+  curl -X POST http://127.0.0.1:8000/pedidos \
+    -H "Content-Type: application/json" \
+    -d '{
+      "cliente": "Valeria Rojo",
+      "sabor_id": 1,
+      "tamano": "vaso"
+    }'
+  ```
+  </RequestExample>
+
+  <ResponseExample>
+  ```json Success 201 Created
+  {
+    "id": 1,
+    "cliente": "Valeria Rojo",
+    "sabor_id": 1,
+    "tamano": "vaso",
+    "estado": "pendiente"
+  }
+  ```
+  </ResponseExample>
+
+  <Warning>
+  Si intentas usar `sabor_id` igual a 2 (Limon vegano) obtendras `400` porque el sabor no esta disponible.
+  </Warning>
+</Step>
+
+<Step title="Consultar el pedido y su estado">
+  <RequestExample>
+  ```bash cURL
+  curl http://127.0.0.1:8000/pedidos/1
+  ```
+  </RequestExample>
+
+  <ResponseExample>
+  ```json Success 200 OK
+  {
+    "id": 1,
+    "cliente": "Valeria Rojo",
+    "sabor_id": 1,
+    "tamano": "vaso",
+    "estado": "pendiente"
+  }
+  ```
+  </ResponseExample>
+
+  Para mostrar solo el seguimiento al cliente:
+
+  <RequestExample>
+  ```bash cURL
+  curl http://127.0.0.1:8000/pedidos/1/estado
+  ```
+  </RequestExample>
+
+  <ResponseExample>
+  ```json Success 200 OK
+  {
+    "pedido_id": 1,
+    "estado": "pendiente"
+  }
+  ```
+  </ResponseExample>
+
+  <Check>
+  Integra esta respuesta en bots de WhatsApp o notificaciones push para reducir llamadas.
+  </Check>
+</Step>
+</Steps>
