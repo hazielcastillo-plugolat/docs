@@ -2,6 +2,7 @@ from enum import Enum
 from typing import List
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 
@@ -38,6 +39,19 @@ app = FastAPI(
     summary="Registra sabores y pedidos para la heladeria Cookies & Cream",
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+        "http://127.0.0.1:4173",
+        "http://localhost:4173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 sabores: List[Sabor] = []
 pedidos: List[Pedido] = []
 sabor_id_seq = 1
@@ -71,6 +85,11 @@ def crear_pedido(pedido: PedidoBase) -> Pedido:
     pedidos.append(nuevo)
     pedido_id_seq += 1
     return nuevo
+
+
+@app.get("/pedidos", response_model=List[Pedido])
+def listar_pedidos() -> List[Pedido]:
+    return pedidos
 
 
 @app.get("/pedidos/{pedido_id}", response_model=Pedido)

@@ -134,6 +134,33 @@ Etapa actual del pedido.
 ```
 </ResponseExample>
 
+### Listar pedidos (GET `/pedidos`)
+
+<Info>
+El front de operadores usa este endpoint para poblar la tabla de pedidos recientes. Ordena el array en tu cliente cuando necesites ver los ultimos registros primero.
+</Info>
+
+<ResponseExample>
+```json Success 200 OK
+[
+  {
+    "id": 1,
+    "cliente": "Valeria Rojo",
+    "sabor_id": 1,
+    "tamano": "vaso",
+    "estado": "pendiente"
+  },
+  {
+    "id": 2,
+    "cliente": "Eduardo Prado",
+    "sabor_id": 1,
+    "tamano": "litro",
+    "estado": "preparando"
+  }
+]
+```
+</ResponseExample>
+
 ### Consultar estado (GET `/pedidos/{pedido_id}/estado`)
 
 <ResponseExample>

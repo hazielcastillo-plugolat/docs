@@ -1,0 +1,104 @@
+---
+title: "Frontend operativo"
+description: "Documenta el panel React/Vite que los operadores usan para registrar sabores y pedidos."
+---
+
+## Objetivo del panel
+
+El front construido en `front-app` ofrece una interfaz única para personal operativo: consulta tablas de sabores y pedidos, registra nuevos recursos y comparte estados con clientes en tiempo real.
+
+<Info>
+Todos los flujos consumen la API documentada en estas páginas; no existe lógica duplicada fuera de FastAPI.
+</Info>
+
+## Tecnologías clave
+
+<CardGroup cols={3}>
+  <Card title="Vite + React" icon="bolt">
+    SPA ligera con soporte para HMR, `npm run dev` y `npm run build`.
+  </Card>
+  <Card title="Fetch nativo" icon="link">
+    Solicitudes HTTP directas hacia FastAPI con control de errores.
+  </Card>
+  <Card title="CSS modular" icon="palette">
+    `src/App.css` define grid, tablas y badges pensados para agentes nuevos.
+  </Card>
+</CardGroup>
+
+## Scripts y mantenimiento
+
+<Steps>
+<Step title="Instalación inicial">
+  ```bash
+  cd front-app
+  npm install
+  ```
+
+  <Tip>
+  Versiona los cambios junto con la API para mantener sincronizada la evolución de los endpoints.
+  </Tip>
+</Step>
+
+<Step title="Variables de entorno">
+  Define la URL de la API cuando no uses `http://127.0.0.1:8000`.
+
+  ```bash
+  VITE_API_BASE=https://api.cookiescream.dev
+  ```
+
+  <Info>
+  El middleware CORS en FastAPI ya expone `localhost:5173` y `localhost:4173`, así que no necesitas configuraciones adicionales en desarrollo.
+  </Info>
+</Step>
+
+<Step title="Ejecución y build">
+  ```bash
+  npm run dev      # desarrollo
+  npm run build    # assets de producción en front-app/dist
+  npm run preview  # validar build localmente
+  ```
+
+  <Check>
+  Netlify, Vercel o Cloudflare Pages pueden desplegar los archivos del directorio `dist` sin cambios adicionales.
+  </Check>
+</Step>
+</Steps>
+
+## Componentes principales
+
+| Archivo/Sección | Descripción | Interacción |
+| --- | --- | --- |
+| `App.jsx` – `Section` | Layout modular que agrupa las tarjetas (catálogo, pedidos, seguimiento) | Renderiza formularios y tablas |
+| `Table` reutilizable | Muestra sabores o pedidos recientes en una sola UI | Recibe columnas dinámicas y datasets |
+| `notifications` | Sistema ligero de toasts para confirmar acciones | Se activa en altas de sabores/pedidos |
+| `orders-layout` | Grid que coloca formulario y tabla lado a lado | Ahorra desplazamiento en desktop |
+
+<Tip>
+Al agregar nuevos bloques, reutiliza `Section` para mantener uniformidad con los demás apartados documentados aquí.
+</Tip>
+
+## Interacción con la API
+
+<AccordionGroup>
+<Accordion title="Catálogo de sabores">
+  - `GET /sabores`: llena la tabla principal y las opciones del selector.
+  - `POST /sabores`: crea sabores nuevos desde el formulario.
+</Accordion>
+
+<Accordion title="Pedidos y seguimiento">
+  - `POST /pedidos`: registra pedidos vía formulario.
+  - `GET /pedidos`: alimenta la tabla de pedidos recientes (se muestran los últimos registros).
+  - `GET /pedidos/{pedido_id}/estado`: expone el estado puntual para atención al cliente.
+</Accordion>
+</AccordionGroup>
+
+<Note>
+La respuesta de `GET /pedidos` se ordena en el cliente antes de mostrarse; ajusta el sorting si necesitas otro criterio (por ejemplo, más antiguos primero).
+</Note>
+
+## Prácticas de mantenimiento
+
+- **Revisa CORS al cambiar dominios**: si migras el panel a otro dominio, añade su origen a la lista de `CORSMiddleware` en `main.py`.
+- **Valida modelos antes de desplegar**: el front no revalida campos extensivamente, confía en las restricciones Pydantic definidas en `PedidoBase` y `SaborBase`.
+- **Monitorea builds**: ejecuta `npm run build` antes de cualquier PR para asegurar que no se rompan dependencias o estilos.
+- **Documenta componentes nuevos**: si agregas vistas (por ejemplo, paneles de métricas), crea subsecciones en este archivo para mantener alineado al equipo de soporte.

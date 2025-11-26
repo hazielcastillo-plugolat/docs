@@ -70,6 +70,7 @@ from enum import Enum
 from typing import List
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 
@@ -104,6 +105,19 @@ app = FastAPI(
     title="Cookies & Cream API",
     version="1.0.0",
     summary="Registra sabores y pedidos para la heladeria Cookies & Cream",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+        "http://127.0.0.1:4173",
+        "http://localhost:4173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 sabores: List[Sabor] = []
@@ -141,6 +155,11 @@ def crear_pedido(pedido: PedidoBase) -> Pedido:
     return nuevo
 
 
+@app.get("/pedidos", response_model=List[Pedido])
+def listar_pedidos() -> List[Pedido]:
+    return pedidos
+
+
 @app.get("/pedidos/{pedido_id}", response_model=Pedido)
 def obtener_pedido(pedido_id: int) -> Pedido:
     pedido = next((p for p in pedidos if p.id == pedido_id), None)
@@ -156,3 +175,44 @@ def estado_pedido(pedido_id: int) -> dict:
         raise HTTPException(status_code=404, detail="Pedido no encontrado.")
     return {"pedido_id": pedido.id, "estado": pedido.estado}
 ```
+
+## Panel web para operadores
+
+<Steps>
+<Step title="Instalar dependencias del front">
+  Ejecuta los comandos dentro de la carpeta `front-app`.
+
+  ```bash
+  cd front-app
+  npm install
+  ```
+
+  <Tip>
+  Reutiliza el mismo entorno de Git: los cambios de React quedan versionados junto con FastAPI y la documentacion.
+  </Tip>
+</Step>
+
+<Step title="Configurar la URL de la API">
+  Crea un archivo `.env` (opcional) si la API corre fuera de `127.0.0.1:8000`.
+
+  ```bash
+  VITE_API_BASE=https://api.cookiescream.dev
+  ```
+
+  <Info>
+  Cuando no se define, el front usa `http://127.0.0.1:8000`, la misma URL del `uvicorn --reload`.
+  </Info>
+</Step>
+
+<Step title="Ejecutar el front y consumir la API">
+  ```bash
+  npm run dev
+  ```
+
+  Abre `http://localhost:5173` para acceder al panel que muestra la tabla completa de sabores, los pedidos recientes (vía `GET /pedidos`) y formularios guiados para registrar nuevos recursos.
+
+  <Check>
+  Vite expone `npm run build` para publicar el sitio estatico en cualquier CDN.
+  </Check>
+</Step>
+</Steps>

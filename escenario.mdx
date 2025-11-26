@@ -106,6 +106,34 @@ description: "Recorrido paso a paso para usar los endpoints de sabores y pedidos
   </Warning>
 </Step>
 
+<Step title="Revisar pedidos recientes">
+  El front consume `GET /pedidos` para llenar la tabla de la columna derecha; puedes realizar la misma consulta desde terminal.
+
+  <RequestExample>
+  ```bash cURL
+  curl http://127.0.0.1:8000/pedidos
+  ```
+  </RequestExample>
+
+  <ResponseExample>
+  ```json Success 200 OK
+  [
+    {
+      "id": 1,
+      "cliente": "Valeria Rojo",
+      "sabor_id": 1,
+      "tamano": "vaso",
+      "estado": "pendiente"
+    }
+  ]
+  ```
+  </ResponseExample>
+
+  <Tip>
+  El panel React muestra solo los ultimos pedidos, pero este endpoint retorna toda la cola si necesitas auditar historicos.
+  </Tip>
+</Step>
+
 <Step title="Consultar el pedido y su estado">
   <RequestExample>
   ```bash cURL

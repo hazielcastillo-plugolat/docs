@@ -35,6 +35,9 @@ El objetivo es educativo. Puedes reemplazar las listas en memoria por bases de d
   <Card title="Archivo principal" icon="file-code" href="/setup#codigo-base-reutilizable">
     Accede directo a la implementacion de FastAPI para integrarla a tus flujos.
   </Card>
+  <Card title="Panel web para operadores" icon="display" href="/frontend">
+    Despliega el front en `front-app` para que el equipo registre sabores y pedidos con tablas guiadas.
+  </Card>
 </CardGroup>
 
 ## Flujo general resumido
@@ -59,3 +62,13 @@ El objetivo es educativo. Puedes reemplazar las listas en memoria por bases de d
 - Ejecuta `uvicorn main:app --reload` para habilitar Swagger UI en `http://127.0.0.1:8000/docs`.
 - Usa `/redoc` si prefieres una representacion alternativa de la API.
 - Todos los ejemplos emplean datos reales (Cookies & Cream Clasico, Valeria Rojo) reutilizados en las secciones de Escenario y Referencia.
+
+## Operaciones en tiempo real
+
+<Info>
+El front creado con Vite (`front-app`) consume los mismos endpoints documentados aqui. Desde `http://localhost:5173` puedes:
+
+- Consultar tablas de sabores y pedidos recientes (usa `GET /sabores` y `GET /pedidos`).
+- Registrar sabores o pedidos con formularios validados.
+- Compartir el estado de un pedido con clientes usando `GET /pedidos/{pedido_id}/estado`.
+</Info>
